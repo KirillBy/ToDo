@@ -1,0 +1,39 @@
+.todo-list-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+  }
+  
+  .todo-list-item button {
+    width: 70px;
+    margin: 3px;
+  }
+  
+  .todo-list-item-label {
+    line-height: 35px;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .todo-list-item.done .todo-list-item-label {
+    text-decoration: line-through;
+  }
+  
+  .todo-list-item.important .todo-list-item-label {
+    font-weight: bold;
+    color: steelblue;
+  }
+
+  .btn-outline-danger {
+    color: #dc3545;
+    background-color: transparent;
+    background-image: none;
+    border-color: #dc3545;
+}
+
+.btn-outline-primary {
+  color: #007bff;
+  background-color: transparent;
+  background-image: none;
+  border-color: #007bff;
+}

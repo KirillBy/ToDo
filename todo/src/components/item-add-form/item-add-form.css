@@ -1,0 +1,24 @@
+.item-add-form  {
+    margin-top: 10px;
+    display: flex;
+}
+
+.item-add-form input {
+    margin-right: 3px;
+}
+
+.item-add-btn {
+    padding-right: 0.375rem;
+    padding-left: 0.375rem;
+    font-size: 12px;
+
+}
+.btn-outline-success {
+    color: #28a745;
+    background-color: transparent;
+    background-image: none;
+    border-color: #28a745;
+}
+.form-control{
+    width: 80%;
+}
