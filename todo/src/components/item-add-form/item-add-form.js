@@ -21,22 +21,32 @@ export default class ItemAddForm extends Component {
       label: ''
     });
   };
-
+  onClose = e => {
+    this.props.onClose && this.props.onClose(e);
+  };
   render() {
+    if (!this.props.show) {
+      return null;
+    }
     return (
-      <form className="item-add-form"
-            onSubmit={this.onSubmit}>
-
-        <input type="text"
-               className="form-control"
-               onChange={this.onLabelChange}
-               placeholder="What needs to be done"
-               value={this.state.label} />
-        <button
-          className=" btn item-add-btn btn-outline-success">
-          Add Item
+      <React.Fragment>
+        <form className="item-add-form"
+          onSubmit={this.onSubmit}>
+          <input type="text"
+            className="form-control"
+            onChange={this.onLabelChange}
+            placeholder="What needs to be done"
+            value={this.state.label} />
+          <button
+            className=" btn item-add-btn btn-outline-success">
+            Add
         </button>
-      </form>
+        </form>
+        <button class="toggle-button" onClick={this.onClose}>
+          close
+        </button>
+      </React.Fragment>
+
     );
   }
 }

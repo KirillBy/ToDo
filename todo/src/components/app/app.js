@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
 import './app.css';
 import ItemAddForm from '../item-add-form';
+import Modal from "../modal";
 
 export default class App extends Component {
 
@@ -17,7 +17,14 @@ export default class App extends Component {
       this.createTodoItem('Eat Pizza')
     ], 
     term: "",
-    filter: "all" //active, act, done
+    filter: "all", //active, act, done
+    show: false
+  };
+
+  showModal = e => {
+    this.setState({
+      show: !this.state.show
+    });
   };
 
   filter(items, filter) {
@@ -54,11 +61,12 @@ export default class App extends Component {
     })
   };
 
-  addItem = (text) => {
+  addItem = (text, show) => {
     this.setState(({todoData}) => {
       const newArray = [...todoData, this.createTodoItem(text)];
       return {
-        todoData: newArray
+        todoData: newArray,
+        show: false
       }
     })
   }
@@ -123,7 +131,18 @@ export default class App extends Component {
         onToggleImportant={this.onToggleImportant}
         onToggleDone = {this.onToggleDone}
         />
-        <ItemAddForm onAdd ={this.addItem}/>
+        <button
+          class="toggle-button"
+          id="centered-toggle-button"
+          hidden = {this.state.show}
+          onClick={e => {
+            this.showModal(e);
+          }}
+        > + </button>
+        <ItemAddForm 
+        onAdd ={this.addItem}
+        onClose={this.showModal}
+        show={this.state.show}/>
       </div>
     );
   };
