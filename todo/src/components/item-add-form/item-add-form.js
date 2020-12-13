@@ -5,7 +5,12 @@ import './item-add-form.css';
 export default class ItemAddForm extends Component {
 
   state = {
-    label: ''
+    label: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    startDate: Date.now,
+    finishDate: Date.now
   };
 
   onLabelChange = (e) => {
@@ -14,11 +19,42 @@ export default class ItemAddForm extends Component {
     });
   };
 
+  onFirstNameChange = (e) => {
+    this.setState({
+      firstName: e.target.value
+    })
+  }
+
+  onLastNameChange = (e) => {
+    this.setState({
+      lastName: e.target.value
+    })
+  }
+
+  onEmailChange = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
+  onStartDateChange = (e) => {
+    this.setState({
+      startDate: e.target.value
+    })
+  }
+
+  onFinishDateChange = (e) => {
+    this.setState({
+      finishDate: e.target.value
+    })
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.onAdd(this.state.label);
     this.setState({
-      label: ''
+      label: '',
+      firstName: ''
     });
   };
   onClose = e => {
@@ -32,6 +68,37 @@ export default class ItemAddForm extends Component {
       <React.Fragment>
         <form className="item-add-form"
           onSubmit={this.onSubmit}>
+          <input type="text"
+            className="form-control"
+            onChange={this.onFirstNameChange}
+            placeholder="First name"
+            value={this.state.firstName} />
+          <input type="text"
+            className="form-control"
+            onChange={this.onLastNameChange}
+            placeholder="Last name"
+            value={this.state.lastName} />
+          <input type="email"
+            className="form-control"
+            onChange={this.onEmailChange}
+            placeholder="Email"
+            value={this.state.firstName} />
+          <div className = "date-group">
+            <span className="form-span">from </span>
+            <input type="date"
+              className="form-control  form-date"
+              onChange={this.onStartDateChange}
+              value={this.state.startDate} />
+            <span className="form-span">to </span>
+            <input type="date"
+              className="form-control  form-date"
+              onChange={this.onFinishDateChange}
+              value={this.state.finishDate} />
+          </div>
+          <select>
+            <option>Пункт 1</option>
+            <option>Пункт 2</option>
+          </select>
           <input type="text"
             className="form-control"
             onChange={this.onLabelChange}

@@ -1,6 +1,7 @@
 .item-add-form  {
     margin-top: 10px;
     display: flex;
+    flex-direction: column;
 }
 
 .item-add-form input {
@@ -20,5 +21,22 @@
     border-color: #28a745;
 }
 .form-control{
-    width: 80%;
+    width: 100%;
+    margin-bottom: 5px;
 }
+
+.item-add-btn{
+    width: 102%;
+}
+
+.toggle-button{
+    width: 102%;
+}
+
+.form-span{
+    white-space:nowrap;
+}
+
+.form-date{
+    width: 41%;
+}   
