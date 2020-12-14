@@ -14,12 +14,14 @@
     font-size: 12px;
 
 }
+
 .btn-outline-success {
     color: #28a745;
     background-color: transparent;
     background-image: none;
     border-color: #28a745;
 }
+
 .form-control{
     width: 100%;
     margin-bottom: 5px;
@@ -39,4 +41,9 @@
 
 .form-date{
     width: 41%;
-}   
+}
+
+.todo-select{
+    width: 93%;
+    margin-bottom: 5px;
+}

@@ -5,27 +5,59 @@ import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
 import './app.css';
 import ItemAddForm from '../item-add-form';
-import Modal from "../modal";
+import ItemCart from '../cart';
+import ItemEdit from '../item-edit';
 
 export default class App extends Component {
 
   maxId = 100;
   state = {
-    todoData: [
-      this.createTodoItem('Drink Beer'),
-      this.createTodoItem('Learn React'),
-      this.createTodoItem('Eat Pizza')
-    ], 
+    todoData: [], 
     term: "",
     filter: "all", //active, act, done
-    show: false
+    show: false,
+    info: false,
+    showItems: true,
+    chosenId: 0,
+    edit: false
   };
 
   showModal = e => {
     this.setState({
-      show: !this.state.show
+      show: true,
+      showItems: false
     });
   };
+
+  editTask = () => {
+    this.setState({
+      edit: true,
+      info: false,
+      showItems: false
+    })
+  }
+
+  hideInfo = () => {
+    this.setState({
+      info: false,
+      showItems: true, 
+    })
+  }
+
+  closeEdit = () => {
+    this.setState({
+      edit: false,
+      info: true
+    })
+  }
+
+  showInfo = (id) => {
+    this.setState({
+      info: true,
+      showItems: false, 
+      chosenId: id
+    })
+  }
 
   filter(items, filter) {
     switch (filter) {
@@ -40,9 +72,15 @@ export default class App extends Component {
     }
   }
 
-  createTodoItem(label) {
+  createTodoItem(cart) {
     return {
-      label,
+      firstName: cart.firstName,
+      lastName: cart.lastName,
+      email: cart.email,
+      startDate: cart.startDate,
+      finishDate: cart.finishDate,
+      type: cart.type,
+      label: cart.label,
       important: false,
       done: false,
       id: this.maxId++
@@ -61,22 +99,34 @@ export default class App extends Component {
     })
   };
 
-  addItem = (text, show) => {
+  addItem = (cart, show) => {
     this.setState(({todoData}) => {
-      const newArray = [...todoData, this.createTodoItem(text)];
+      const newArray = [...todoData, this.createTodoItem(cart)];
       return {
         todoData: newArray,
-        show: false
+        show: false,
+        showItems: true
       }
     })
+  }
+
+  saveEdit = (item) => {
+    console.log(item);
+    const idx = this.state.todoData.findIndex((el) => el.id === item.id);
+    this.setState(({todoData}) => {
+      return {
+        todoData: [...todoData.slice(0, idx), item, ...todoData.slice(idx +1)],
+        edit: false,
+        info: true
+      } 
+    });
   }
 
   toggleProperty = (arr, id, propName) => {
     const idx = arr.findIndex((el) => el.id === id);
     const oldItem = arr[idx];
     const newItem = {...oldItem, [propName]: !oldItem[propName]};
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx +1)];
-    
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx +1)];    
   }
 
   onToggleImportant = (id) => {
@@ -118,9 +168,12 @@ export default class App extends Component {
                       .filter((el) => el.done).length;
     const todoCount = todoData.length - doneCount;
     const visibleData = this.filter(this.filterItems(todoData, term), filter);
+    const chosenItem = todoData.find((el) => el.id === this.state.chosenId);
     return (
       <div className="todo-app">
         <AppHeader toDo={todoCount} done={doneCount} />
+        {this.state.showItems && (
+         <div> 
         <div className="top-panel">
           <SearchPanel onSearch={this.changeTerm}/>
           <ItemStatusFilter filter={filter} onFilterChange={this.onFilterChange}/>
@@ -130,6 +183,7 @@ export default class App extends Component {
         onDeleted={ this.deleteItem} 
         onToggleImportant={this.onToggleImportant}
         onToggleDone = {this.onToggleDone}
+        onInfo = {this.showInfo}
         />
         <button
           class="toggle-button"
@@ -138,7 +192,17 @@ export default class App extends Component {
           onClick={e => {
             this.showModal(e);
           }}
-        > + </button>
+        > + </button> </div> )}
+        {this.state.info && 
+        <ItemCart 
+        item={chosenItem} 
+        onBack={this.hideInfo}
+        onTaskEdit={this.editTask}/>}
+        {this.state.edit && 
+        <ItemEdit 
+        item={chosenItem}
+        onClose={this.closeEdit}
+        onEdit={this.saveEdit}/>}
         <ItemAddForm 
         onAdd ={this.addItem}
         onClose={this.showModal}

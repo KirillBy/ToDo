@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './todo-list-item.css';
 
-const TodoListItem = ({label, onDeleted, onToggleImportant, onToggleDone, done, important}) => {
+const TodoListItem = ({label, onDeleted, onInfo, onToggleImportant, onToggleDone, done, important}) => {
 
     let classNames = 'todo-list-item';
     if(done) {
@@ -21,6 +21,13 @@ const TodoListItem = ({label, onDeleted, onToggleImportant, onToggleDone, done, 
         </span>
   
         <div className="btn btn-group">
+
+          <button type="button"
+                  className=" btn btn-outline-dark"
+                  onClick={onInfo}>
+                    Info
+          </button>
+
           <button type="button"
                   className="btn btn-outline-primary"
                   onClick = {onToggleImportant}>
@@ -32,6 +39,7 @@ const TodoListItem = ({label, onDeleted, onToggleImportant, onToggleDone, done, 
                   onClick={onDeleted}>
                     Delete
           </button>
+          
         </div>
 
       </span>

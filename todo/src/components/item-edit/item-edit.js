@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 
-import './item-add-form.css';
+import './item-edit.css';
 
-export default class ItemAddForm extends Component {
-
+export default class ItemEdit extends Component {
+    
   state = {
-    label: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    startDate: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
-    finishDate: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
-    type: 'work'
+    id: this.props.item.id,
+    label: this.props.item.label,
+    firstName: this.props.item.firstName,
+    lastName: this.props.item.lastName,
+    email: this.props.item.email,
+    startDate: this.props.item.startDate,
+    finishDate: this.props.item.finishDate,
+    type: this.props.item.type
   };
 
   onLabelChange = (e) => {
@@ -59,6 +60,7 @@ export default class ItemAddForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     let newCart = {
+      id: this.state.id,  
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
@@ -67,23 +69,12 @@ export default class ItemAddForm extends Component {
       type: this.state.type,
       label: this.state.label
     }
-    this.props.onAdd(newCart);
-    this.setState({
-      label: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      startDate: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
-      finishDate: new Date().toJSON().slice(0,10).replace(/-/g,'/')
-    });
+    this.props.onEdit(newCart);
   };
   onClose = e => {
     this.props.onClose && this.props.onClose(e);
   };
   render() {
-    if (!this.props.show) {
-      return null;
-    }
     return (
       <React.Fragment>
         <form className="item-add-form"
@@ -117,8 +108,7 @@ export default class ItemAddForm extends Component {
           </div>
           <div select-group>
           <span className="form-span">Type </span>
-            <select className="todo-select" onChange={this.onTypeChange}>
-              <option value="" selected disabled hidden>Choose type</option>
+            <select className="todo-select" onChange={this.onTypeChange} defaultValue={this.state.type}>
               <option value='work'>Work</option>
               <option value='study'>Study</option>
               <option value='hobby'>Hobby</option>
@@ -132,7 +122,7 @@ export default class ItemAddForm extends Component {
             value={this.state.label} />
           <button
             className=" btn item-add-btn btn-outline-success">
-            Add
+            Edit
         </button>
         </form>
         <button class="toggle-button" onClick={this.onClose}>
