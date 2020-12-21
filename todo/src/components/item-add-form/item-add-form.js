@@ -82,7 +82,7 @@ export default class ItemAddForm extends Component {
             className="form-control"
             onChange={this.onEmailChange}
             placeholder="Email"
-            value={this.state.firstName} />
+            value={this.state.email} />
           <div className = "date-group">
             <span className="form-span">from </span>
             <input type="date"

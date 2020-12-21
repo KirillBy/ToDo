@@ -1,24 +1,26 @@
 import React from 'react';
 import './modal.css';
 
-export default class Modal extends React.Component {
-  onClose = e => {
-    this.props.onClose && this.props.onClose(e);
+const Modal = ({onClose, show, children}) => {
+
+  const closeModal = e => {
+    onClose && onClose(e);
   };
-  render() {
-    if (!this.props.show) {
+
+    if (!show) {
       return null;
     }
     return (
       <div class="modal" id="modal">
         <h2>Modal Window</h2>
-        <div class="content">{this.props.children}</div>
+        <div class="content">{children}</div>
         <div class="actions">
-          <button class="toggle-button" onClick={this.onClose}>
+          <button class="toggle-button" onClick={closeModal}>
             close
           </button>
         </div>
       </div>
     );
   }
-}
+
+export default Modal;
