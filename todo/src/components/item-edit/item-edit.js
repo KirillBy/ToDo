@@ -1,114 +1,97 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import './item-edit.css';
 
-export default class ItemEdit extends Component {
-    
-  state = {
-    id: this.props.item.id,
-    label: this.props.item.label,
-    firstName: this.props.item.firstName,
-    lastName: this.props.item.lastName,
-    email: this.props.item.email,
-    startDate: this.props.item.startDate,
-    finishDate: this.props.item.finishDate,
-    type: this.props.item.type
+const ItemEdit = ({onClose, onEdit, item}) => {
+  const [label, setLabel] = useState(item.label)
+  const [firstName, setFirstName] = useState(item.firstName)
+  const [lastName, setLastName] = useState(item.lastName)
+  const [email, setEmail] = useState(item.email)
+  const [startDate, setStartDate] = useState(item.startDate)
+  const [finishDate, setFinishDate] = useState(item.finishDate)
+  const [type, setType] = useState(item.type)
+
+
+  const onLabelChange = (e) => {
+    setLabel(e.target.value);
   };
 
-  onLabelChange = (e) => {
-    this.setState({
-      label: e.target.value
-    });
-  };
-
-  onFirstNameChange = (e) => {
-    this.setState({
-      firstName: e.target.value
-    })
+  const onFirstNameChange = (e) => {
+    setFirstName(e.target.value);
   }
 
-  onLastNameChange = (e) => {
-    this.setState({
-      lastName: e.target.value
-    })
+  const onLastNameChange = (e) => {
+    setLastName(e.target.value);
   }
 
-  onEmailChange = (e) => {
-    this.setState({
-      email: e.target.value
-    })
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
   }
 
-  onStartDateChange = (e) => {
-    this.setState({
-      startDate: e.target.value
-    })
+  const onStartDateChange = (e) => {
+    setStartDate(e.target.value);
   }
 
-  onFinishDateChange = (e) => {
-    this.setState({
-      finishDate: e.target.value
-    })
+  const onFinishDateChange = (e) => {
+    setFinishDate(e.target.value);
   }
 
-  onTypeChange = (e) => {
-    this.setState ({
-      type: e.target.value
-    })
+  const onTypeChange = (e) => {
+    setType(e.target.value);
   }
 
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     let newCart = {
-      id: this.state.id,  
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      startDate: this.state.startDate,
-      finishDate: this.state.finishDate,
-      type: this.state.type,
-      label: this.state.label
+      id: item.id,  
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      startDate: startDate,
+      finishDate: finishDate,
+      type: type,
+      label: label
     }
-    this.props.onEdit(newCart);
+    onEdit(newCart);
   };
-  onClose = e => {
-    this.props.onClose && this.props.onClose(e);
+  const onEditClose = e => {
+    onClose && onClose(e);
   };
-  render() {
+
     return (
       <React.Fragment>
         <form className="item-add-form"
-          onSubmit={this.onSubmit}>
+          onSubmit={onSubmit}>
           <input type="text"
             className="form-control"
-            onChange={this.onFirstNameChange}
+            onChange={onFirstNameChange}
             placeholder="First name"
-            value={this.state.firstName} />
+            value={firstName} />
           <input type="text"
             className="form-control"
-            onChange={this.onLastNameChange}
+            onChange={onLastNameChange}
             placeholder="Last name"
-            value={this.state.lastName} />
+            value={lastName} />
           <input type="email"
             className="form-control"
-            onChange={this.onEmailChange}
+            onChange={onEmailChange}
             placeholder="Email"
-            value={this.state.email} />
+            value={email} />
           <div className = "date-group">
             <span className="form-span">from </span>
             <input type="date"
               className="form-control  form-date"
-              onChange={this.onStartDateChange}
-              value={this.state.startDate} />
+              onChange={onStartDateChange}
+              value={startDate} />
             <span className="form-span">to </span>
             <input type="date"
               className="form-control  form-date"
-              onChange={this.onFinishDateChange}
-              value={this.state.finishDate} />
+              onChange={onFinishDateChange}
+              value={finishDate} />
           </div>
           <div select-group>
           <span className="form-span">Type </span>
-            <select className="todo-select" onChange={this.onTypeChange} defaultValue={this.state.type}>
+            <select className="todo-select" onChange={onTypeChange} defaultValue={type}>
               <option value='work'>Work</option>
               <option value='study'>Study</option>
               <option value='hobby'>Hobby</option>
@@ -117,19 +100,19 @@ export default class ItemEdit extends Component {
           </div>
           <input type="text"
             className="form-control"
-            onChange={this.onLabelChange}
+            onChange={onLabelChange}
             placeholder="What needs to be done"
-            value={this.state.label} />
+            value={label} />
           <button
             className=" btn item-add-btn btn-outline-success">
             Edit
         </button>
         </form>
-        <button class="toggle-button" onClick={this.onClose}>
+        <button class="toggle-button" onClick={onEditClose}>
           close
         </button>
       </React.Fragment>
 
     );
-  }
 }
+export default ItemEdit;
