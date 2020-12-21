@@ -2,17 +2,21 @@
     display: flex;
     justify-content: space-between;
     font-size: 1.25rem;
+    word-wrap: break-word
   }
   
   .todo-list-item button {
-    width: 70px;
+    width: 75px;
     margin: 3px;
+    max-height: 25px;
   }
   
   .todo-list-item-label {
     line-height: 35px;
     cursor: pointer;
     user-select: none;
+    max-width: 37%;
+    overflow-wrap: break-word;
   }
   
   .todo-list-item.done .todo-list-item-label {
@@ -37,3 +41,14 @@
   background-image: none;
   border-color: #007bff;
 }
+
+.btn-outline-dark {
+  color: #343a40;
+  background-color: transparent;
+  background-image: none;
+  border-color: #343a40;
+}
+
+ul {
+  padding-inline-start: 2px;
+} 
