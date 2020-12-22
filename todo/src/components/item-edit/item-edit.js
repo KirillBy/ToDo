@@ -108,7 +108,7 @@ const ItemEdit = ({onClose, onEdit, item}) => {
             Edit
         </button>
         </form>
-        <button class="toggle-button" onClick={onEditClose}>
+        <button className="toggle-button" onClick={onEditClose}>
           close
         </button>
       </React.Fragment>

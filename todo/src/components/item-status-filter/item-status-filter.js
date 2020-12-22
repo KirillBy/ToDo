@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-
+import React from 'react';
 import './item-status-filter.css';
+
 const ItemStatusFilter = ({filter, onFilterChange}) => {
 
   const buttonsList = [
@@ -16,7 +16,7 @@ const ItemStatusFilter = ({filter, onFilterChange}) => {
       <div className="btn-group">
         <button type="button"
                 className={`btn ${clazz}`}
-                key={name}
+                key = {name}
                 onClick= {() => onFilterChange(name)} >
                  {label}
         </button>

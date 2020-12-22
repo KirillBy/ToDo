@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './todo-list-item.css';
 
 const TodoListItem = ({label, onDeleted, onInfo, onToggleImportant, onToggleDone, done, important}) => {

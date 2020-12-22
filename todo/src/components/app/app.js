@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
@@ -8,58 +8,51 @@ import ItemAddForm from '../item-add-form';
 import ItemCart from '../cart';
 import ItemEdit from '../item-edit';
 
-export default class App extends Component {
+const App = () => {
 
-  maxId = 100;
-  state = {
-    todoData: [], 
-    term: "",
-    filter: "all", //active, act, done
-    show: false,
-    info: false,
-    showItems: true,
-    chosenId: 0,
-    edit: false
+  let maxId = 100;
+  const [todoData, setTodoData] = useState([]);
+  const [term, setTerm] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [show, setShow] = useState(false);
+  const [info, setInfo] = useState(false);
+  const [showItems, setShowItems] = useState(true);
+  const [chosenId, setChosenId] = useState(0);
+  const [edit, setEdit] = useState(false);
+
+  const closeModal = () => {
+    setShow(false);
+    setShowItems(true);
   };
 
-  showModal = e => {
-    this.setState({
-      show: true,
-      showItems: false
-    });
+  const showModal = e => {
+    setShow(true);
+    setShowItems(false);
   };
 
-  editTask = () => {
-    this.setState({
-      edit: true,
-      info: false,
-      showItems: false
-    })
+  const editTask = () => {
+    setEdit(true);
+    setInfo(false);
+    setShowItems(true);
   }
 
-  hideInfo = () => {
-    this.setState({
-      info: false,
-      showItems: true, 
-    })
+  const hideInfo = () => {
+    setInfo(false);
+    setShowItems(true);
   }
 
-  closeEdit = () => {
-    this.setState({
-      edit: false,
-      info: true
-    })
+  const closeEdit = () => {
+    setEdit(false);
+    setInfo(true);
   }
 
-  showInfo = (id) => {
-    this.setState({
-      info: true,
-      showItems: false, 
-      chosenId: id
-    })
+  const showInfo = (id) => {
+    setInfo(true);
+    setShowItems(false);
+    setChosenId(id);
   }
 
-  filter(items, filter) {
+  const filterStatus = (items, filter) => {
     switch (filter) {
       case 'all':
         return items;
@@ -72,7 +65,7 @@ export default class App extends Component {
     }
   }
 
-  createTodoItem(cart) {
+  const createTodoItem = (cart) => {
     return {
       firstName: cart.firstName,
       lastName: cart.lastName,
@@ -83,69 +76,49 @@ export default class App extends Component {
       label: cart.label,
       important: false,
       done: false,
-      id: this.maxId++
+      id: maxId++
     }
   }
 
-  deleteItem = (id) => {
-    this.setState(({todoData}) => {
+  const deleteItem = (id) => {
       const idx = todoData.findIndex((el) => el.id === id);
       const before = todoData.slice(0, idx);
       const after = todoData.slice(idx +1);
       const newArray= [...before, ...after]
-      return {
-        todoData: newArray
-      }
-    })
+      setTodoData(newArray);
   };
 
-  addItem = (cart, show) => {
-    this.setState(({todoData}) => {
-      const newArray = [...todoData, this.createTodoItem(cart)];
-      return {
-        todoData: newArray,
-        show: false,
-        showItems: true
-      }
-    })
+  const addItem = (cart) => {
+      let newArray = [...todoData, createTodoItem(cart)];
+      setTodoData(newArray);
+      setShow(false);
+      setShowItems(true);
   }
 
-  saveEdit = (item) => {
-    console.log(item);
-    const idx = this.state.todoData.findIndex((el) => el.id === item.id);
-    this.setState(({todoData}) => {
-      return {
-        todoData: [...todoData.slice(0, idx), item, ...todoData.slice(idx +1)],
-        edit: false,
-        info: true
-      } 
-    });
+  const saveEdit = (item) => {
+    const idx = todoData.findIndex((el) => el.id === item.id);
+    let newArray = [...todoData.slice(0, idx), item, ...todoData.slice(idx +1)];
+    setTodoData(newArray);
+    setEdit(false);
+    setInfo(true);
   }
 
-  toggleProperty = (arr, id, propName) => {
+  const toggleProperty = (arr, id, propName) => {
     const idx = arr.findIndex((el) => el.id === id);
     const oldItem = arr[idx];
     const newItem = {...oldItem, [propName]: !oldItem[propName]};
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx +1)];    
   }
 
-  onToggleImportant = (id) => {
-    this.setState(({todoData}) => {
-      return{
-        todoData: this.toggleProperty(todoData, id, 'important')
-      };
-    });
+  const onToggleImportant = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'important'));
   };
 
-  onToggleDone = (id) => {
-    this.setState(({todoData}) => {
-      return{
-        todoData: this.toggleProperty(todoData, id, 'done')
-      };
-    })
+  const onToggleDone = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'done'));
   };
 
-  filterItems = (arr, term) => {
+  const filterItems = (arr, term) => {
     if (term.length === 0){
       return arr;
     }
@@ -154,61 +127,60 @@ export default class App extends Component {
     })
   }
 
-  changeTerm = (term) => {
-    this.setState({term});
+  const changeTerm = (term) => {
+    setTerm(term)
   }
 
-  onFilterChange = (filter) => {
-    this.setState({filter});
+  const onFilterChange = (filter) => {
+    setFilter(filter)
   }
 
-  render() {
-    const { todoData, term, filter } = this.state;
     const doneCount = todoData
                       .filter((el) => el.done).length;
     const todoCount = todoData.length - doneCount;
-    const visibleData = this.filter(this.filterItems(todoData, term), filter);
-    const chosenItem = todoData.find((el) => el.id === this.state.chosenId);
+    const visibleData = filterStatus(filterItems(todoData, term), filter);
+    const chosenItem = todoData.find((el) => el.id === chosenId);
+
     return (
       <div className="todo-app">
         <AppHeader toDo={todoCount} done={doneCount} />
-        {this.state.showItems && (
+        {showItems && (
          <div> 
         <div className="top-panel">
-          <SearchPanel onSearch={this.changeTerm}/>
-          <ItemStatusFilter filter={filter} onFilterChange={this.onFilterChange}/>
+          <SearchPanel onSearch={changeTerm}/>
+          <ItemStatusFilter filter={filter} onFilterChange={onFilterChange}/>
         </div>
         <TodoList 
         todos={visibleData} 
-        onDeleted={ this.deleteItem} 
-        onToggleImportant={this.onToggleImportant}
-        onToggleDone = {this.onToggleDone}
-        onInfo = {this.showInfo}
+        onDeleted={deleteItem} 
+        onToggleImportant={onToggleImportant}
+        onToggleDone = {onToggleDone}
+        onInfo = {showInfo}
         />
         <button
-          class="toggle-button"
+          className="toggle-button"
           id="centered-toggle-button"
-          hidden = {this.state.show}
+          hidden = {show}
           onClick={e => {
-            this.showModal(e);
+            showModal(e);
           }}
         > + </button> </div> )}
-        {this.state.info && 
+        {info && 
         <ItemCart 
         item={chosenItem} 
-        onBack={this.hideInfo}
-        onTaskEdit={this.editTask}/>}
-        {this.state.edit && 
+        onBack={hideInfo}
+        onTaskEdit={editTask}/>}
+        {edit && 
         <ItemEdit 
         item={chosenItem}
-        onClose={this.closeEdit}
-        onEdit={this.saveEdit}/>}
+        onClose={closeEdit}
+        onEdit={saveEdit}/>}
         <ItemAddForm 
-        onAdd ={this.addItem}
-        onClose={this.showModal}
-        show={this.state.show}/>
+        onAdd ={addItem}
+        onClose={closeModal}
+        show={show}/>
       </div>
     );
-  };
 };
 
+export default App;

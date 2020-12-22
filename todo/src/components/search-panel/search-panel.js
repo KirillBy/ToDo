@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, {useState } from 'react';
 import './search-panel.css';
 
 const SearchPanel = ({onSearch}) => {
