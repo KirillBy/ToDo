@@ -7,10 +7,11 @@ import './app.css';
 import ItemAddForm from '../item-add-form';
 import ItemCart from '../cart';
 import ItemEdit from '../item-edit';
+import { useDispatch, useSelector } from 'react-redux';
+import {incrementItemId} from '../../actions/item';
 
 const App = () => {
 
-  let maxId = 100;
   const [todoData, setTodoData] = useState([]);
   const [term, setTerm] = useState("");
   const [filter, setFilter] = useState("all");
@@ -19,6 +20,10 @@ const App = () => {
   const [showItems, setShowItems] = useState(true);
   const [chosenId, setChosenId] = useState(0);
   const [edit, setEdit] = useState(false);
+
+  const itemIdCounter = useSelector(state => state.item.itemIdCounter);
+  const dispatch = useDispatch();
+  
 
   const closeModal = () => {
     setShow(false);
@@ -66,6 +71,8 @@ const App = () => {
   }
 
   const createTodoItem = (cart) => {
+    dispatch(incrementItemId())
+    console.log(itemIdCounter)
     return {
       firstName: cart.firstName,
       lastName: cart.lastName,
@@ -76,7 +83,7 @@ const App = () => {
       label: cart.label,
       important: false,
       done: false,
-      id: maxId++
+      id: itemIdCounter
     }
   }
 
@@ -135,11 +142,11 @@ const App = () => {
     setFilter(filter)
   }
 
-    const doneCount = todoData
-                      .filter((el) => el.done).length;
-    const todoCount = todoData.length - doneCount;
-    const visibleData = filterStatus(filterItems(todoData, term), filter);
-    const chosenItem = todoData.find((el) => el.id === chosenId);
+  const doneCount = todoData
+                    .filter((el) => el.done).length;
+  const todoCount = todoData.length - doneCount;
+  const visibleData = filterStatus(filterItems(todoData, term), filter);
+  const chosenItem = todoData.find((el) => el.id === chosenId);
 
     return (
       <div className="todo-app">
