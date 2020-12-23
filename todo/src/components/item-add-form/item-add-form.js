@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './item-add-form.css';
+import {addItemToItemList} from '../../actions/item';
+import {changeAddItemForm} from '../../actions/components';
 
-const ItemAddForm = ({onClose, show, onAdd }) => {
+
+const ItemAddForm = () => {
   const [label, setLabel] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -9,7 +13,11 @@ const ItemAddForm = ({onClose, show, onAdd }) => {
   const [startDate, setStartDate] = useState(new Date().toJSON().slice(0,10).replace(/-/g,'/'))
   const [finishDate, setFinishDate] = useState(new Date().toJSON().slice(0,10).replace(/-/g,'/'))
   const [type, setType] = useState('work')
- 
+
+  const visible = useSelector(state => state.components.itemAddForm);
+  const dispatch = useDispatch();
+
+
   const onLabelChange = (e) => {
     setLabel(e.target.value);
   };
@@ -49,7 +57,8 @@ const ItemAddForm = ({onClose, show, onAdd }) => {
       type: type,
       label: label
     }
-    onAdd(newCart);
+    dispatch(addItemToItemList(newCart));
+    dispatch(changeAddItemForm(false));
     setLabel('');
     setFirstName('');
     setLastName('');
@@ -57,11 +66,11 @@ const ItemAddForm = ({onClose, show, onAdd }) => {
     setStartDate(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
     setFinishDate(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
   }  
-  const onItemAddClose = e => {
-    onClose && onClose(e);
+  const onItemAddClose = () => {
+    dispatch(changeAddItemForm(false));
   };
   
-    if (!show) {
+    if (!visible) {
       return null;
     }
     return (

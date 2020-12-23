@@ -7,8 +7,8 @@ import './app.css';
 import ItemAddForm from '../item-add-form';
 import ItemCart from '../cart';
 import ItemEdit from '../item-edit';
-import { useDispatch, useSelector } from 'react-redux';
-import {incrementItemId} from '../../actions/item';
+import {changeAddItemForm} from '../../actions/components';
+import { useDispatch, useSelector} from 'react-redux';
 
 const App = () => {
 
@@ -21,9 +21,8 @@ const App = () => {
   const [chosenId, setChosenId] = useState(0);
   const [edit, setEdit] = useState(false);
 
-  const itemIdCounter = useSelector(state => state.item.itemIdCounter);
+  const itemAddForm = useSelector(state => state.components.ItemAddForm);
   const dispatch = useDispatch();
-  
 
   const closeModal = () => {
     setShow(false);
@@ -35,6 +34,9 @@ const App = () => {
     setShowItems(false);
   };
 
+  const showItemAddForm = () => {
+    dispatch(changeAddItemForm(true))
+  }
   const editTask = () => {
     setEdit(true);
     setInfo(false);
@@ -57,35 +59,6 @@ const App = () => {
     setChosenId(id);
   }
 
-  const filterStatus = (items, filter) => {
-    switch (filter) {
-      case 'all':
-        return items;
-      case 'active':
-        return items.filter((item) => !item.done);
-      case 'done':
-        return items.filter((item) => item.done);
-      default:
-        return items;
-    }
-  }
-
-  const createTodoItem = (cart) => {
-    dispatch(incrementItemId())
-    console.log(itemIdCounter)
-    return {
-      firstName: cart.firstName,
-      lastName: cart.lastName,
-      email: cart.email,
-      startDate: cart.startDate,
-      finishDate: cart.finishDate,
-      type: cart.type,
-      label: cart.label,
-      important: false,
-      done: false,
-      id: itemIdCounter
-    }
-  }
 
   const deleteItem = (id) => {
       const idx = todoData.findIndex((el) => el.id === id);
@@ -94,13 +67,6 @@ const App = () => {
       const newArray= [...before, ...after]
       setTodoData(newArray);
   };
-
-  const addItem = (cart) => {
-      let newArray = [...todoData, createTodoItem(cart)];
-      setTodoData(newArray);
-      setShow(false);
-      setShowItems(true);
-  }
 
   const saveEdit = (item) => {
     const idx = todoData.findIndex((el) => el.id === item.id);
@@ -125,15 +91,7 @@ const App = () => {
     setTodoData(toggleProperty(todoData, id, 'done'));
   };
 
-  const filterItems = (arr, term) => {
-    if (term.length === 0){
-      return arr;
-    }
-    return arr.filter((elem) => {
-      return elem.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
-    })
-  }
-
+ 
   const changeTerm = (term) => {
     setTerm(term)
   }
@@ -145,7 +103,6 @@ const App = () => {
   const doneCount = todoData
                     .filter((el) => el.done).length;
   const todoCount = todoData.length - doneCount;
-  const visibleData = filterStatus(filterItems(todoData, term), filter);
   const chosenItem = todoData.find((el) => el.id === chosenId);
 
     return (
@@ -158,7 +115,6 @@ const App = () => {
           <ItemStatusFilter filter={filter} onFilterChange={onFilterChange}/>
         </div>
         <TodoList 
-        todos={visibleData} 
         onDeleted={deleteItem} 
         onToggleImportant={onToggleImportant}
         onToggleDone = {onToggleDone}
@@ -167,10 +123,8 @@ const App = () => {
         <button
           className="toggle-button"
           id="centered-toggle-button"
-          hidden = {show}
-          onClick={e => {
-            showModal(e);
-          }}
+          hidden = {itemAddForm}
+          onClick={showItemAddForm}
         > + </button> </div> )}
         {info && 
         <ItemCart 
@@ -182,10 +136,7 @@ const App = () => {
         item={chosenItem}
         onClose={closeEdit}
         onEdit={saveEdit}/>}
-        <ItemAddForm 
-        onAdd ={addItem}
-        onClose={closeModal}
-        show={show}/>
+        <ItemAddForm />
       </div>
     );
 };
