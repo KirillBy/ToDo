@@ -85,4 +85,18 @@ describe('items reducer', () => {
         }
       )
   })
+  it('should handle CHANGE_SELECTED_ITEM', () => {
+    expect(
+      item({
+        selectedItem: null
+      }, {
+        type: ACTION_TYPES.CHANGE_SELECTED_ITEM,
+        payload: {id: 12, firstName: "test"}
+      })
+    ).toEqual(
+      {
+        selectedItem: {id: 12, firstName: "test"}
+      }
+    )
+})
 })

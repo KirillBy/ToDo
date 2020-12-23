@@ -29,4 +29,11 @@ describe('item actions', () => {
       }
       expect(actions.changeTerm("aaa")).toEqual(expectedAction)
     })
+    it('should create an action to change selected item', () => {
+      const expectedAction = {
+        type: actions.ACTION_TYPES.CHANGE_SELECTED_ITEM,
+        payload: {id: 99, firstName: "test"}
+      }
+      expect(actions.changeSelectedItem({id: 99, firstName: "test"})).toEqual(expectedAction)
+    })
 })

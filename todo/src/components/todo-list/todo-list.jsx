@@ -1,13 +1,16 @@
 import React from 'react';
-import TodoListItem from './../todo-list-item';
+import TodoListItem from '../todo-list-item';
 import './todo-list.css'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-const TodoList = ({onDeleted, onToggleImportant, onToggleDone, onInfo}) => {
+const TodoList = ({onInfo}) => {
 
   const items = useSelector(state => state.item.items);
   const filter = useSelector(state => state.item.filter);
   const term = useSelector(state => state.item.term);
+  const visible = useSelector(state => state.components.itemListForm);
+  const dispatch = useDispatch();
+
 
   const filterItems = (arr, term) => {
     if (term.length === 0){
@@ -31,18 +34,15 @@ const TodoList = ({onDeleted, onToggleImportant, onToggleDone, onInfo}) => {
     }
   }
 
-
   const visibleItems = filterStatus(filterItems(items, term), filter);
 
   const elments = visibleItems.map((item) =>  {
-      const {id, ...itemProps } = item;
+      if (!visible) {
+        return null;
+      }
         return ( 
-        <li key={id} className="ul">
-          <TodoListItem {...itemProps} 
-          onDeleted={() => onDeleted(id)}
-          onToggleImportant={() => onToggleImportant(id)}
-          onToggleDone={() => onToggleDone(id)}
-          onInfo={() => onInfo(id)}/>
+        <li key={item.id} className="ul">
+          <TodoListItem item = {item} />
         </li>
         );
     });

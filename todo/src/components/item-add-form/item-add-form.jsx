@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './item-add-form.css';
 import {addItemToItemList} from '../../actions/item';
 import {changeAddItemForm} from '../../actions/components';
+import {changeItemListForm} from '../../actions/components';
 
 
 const ItemAddForm = () => {
@@ -59,6 +60,7 @@ const ItemAddForm = () => {
     }
     dispatch(addItemToItemList(newCart));
     dispatch(changeAddItemForm(false));
+    dispatch(changeItemListForm(true));
     setLabel('');
     setFirstName('');
     setLastName('');

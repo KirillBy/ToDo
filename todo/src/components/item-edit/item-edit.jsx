@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {changeItemEditForm, changeItemListForm} from '../../actions/components';
 import './item-edit.css';
 
-const ItemEdit = ({onClose, onEdit, item}) => {
-  const [label, setLabel] = useState(item.label)
-  const [firstName, setFirstName] = useState(item.firstName)
-  const [lastName, setLastName] = useState(item.lastName)
-  const [email, setEmail] = useState(item.email)
-  const [startDate, setStartDate] = useState(item.startDate)
-  const [finishDate, setFinishDate] = useState(item.finishDate)
-  const [type, setType] = useState(item.type)
+const ItemEdit = ({ onEdit}) => {
+  const currentItem = useSelector(state => state.item.selectedItem);
+  const dispatch = useDispatch();  
 
+  const [label, setLabel] = useState(currentItem.label)
+  const [firstName, setFirstName] = useState(currentItem.firstName)
+  const [lastName, setLastName] = useState(currentItem.lastName)
+  const [email, setEmail] = useState(currentItem.email)
+  const [startDate, setStartDate] = useState(currentItem.startDate)
+  const [finishDate, setFinishDate] = useState(currentItem.finishDate)
+  const [type, setType] = useState(currentItem.type)
 
   const onLabelChange = (e) => {
     setLabel(e.target.value);
@@ -43,7 +46,7 @@ const ItemEdit = ({onClose, onEdit, item}) => {
   const onSubmit = (e) => {
     e.preventDefault();
     let newCart = {
-      id: item.id,  
+      id: currentItem.id,  
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -54,10 +57,10 @@ const ItemEdit = ({onClose, onEdit, item}) => {
     }
     onEdit(newCart);
   };
-  const onEditClose = e => {
-    onClose && onClose(e);
+  const onEditClose = () => {
+    dispatch(changeItemEditForm(false));
+    dispatch(changeItemInfoForm(true));
   };
-
     return (
       <React.Fragment>
         <form className="item-add-form"

@@ -30,6 +30,11 @@ export const item = (state = initialState, action) => {
                 ...state,
                 term: action.payload
             }        
+        case ACTION_TYPES.CHANGE_SELECTED_ITEM:
+            return {
+                ...state,
+                selectedItem: action.payload
+            }        
         default:
             return state;
     }
