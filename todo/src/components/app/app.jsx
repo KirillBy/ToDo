@@ -15,8 +15,8 @@ const App = () => {
     return (
       <div className="todo-app">
         <AppHeader />
-        <TodoList />
-        <ItemCart />
+        <Route path='/' component={TodoList}/>
+        <Route path='/item' component={ItemCart}/>
         {itemEditForm && 
         <ItemEdit />}
         <ItemAddForm />
