@@ -2,4 +2,7 @@
     list-style: none;
   }
 
- 
+  .top-panel {
+    display: flex;
+    margin: 1rem 0;
+  }

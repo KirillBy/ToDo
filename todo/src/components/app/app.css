@@ -3,10 +3,7 @@
     max-width: 400px;
   }
   
-  .top-panel {
-    display: flex;
-    margin: 1rem 0;
-  }
+ 
 
   .btn {
     cursor: pointer;
