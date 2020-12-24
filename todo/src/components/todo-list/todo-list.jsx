@@ -1,16 +1,14 @@
 import React from 'react';
 import TodoListItem from '../todo-list-item';
 import './todo-list.css'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const TodoList = ({onInfo}) => {
+const TodoList = () => {
 
   const items = useSelector(state => state.item.items);
   const filter = useSelector(state => state.item.filter);
   const term = useSelector(state => state.item.term);
   const visible = useSelector(state => state.components.itemListForm);
-  const dispatch = useDispatch();
-
 
   const filterItems = (arr, term) => {
     if (term.length === 0){

@@ -70,6 +70,7 @@ const ItemAddForm = () => {
   }  
   const onItemAddClose = () => {
     dispatch(changeAddItemForm(false));
+    dispatch(changeItemListForm(true));
   };
   
     if (!visible) {

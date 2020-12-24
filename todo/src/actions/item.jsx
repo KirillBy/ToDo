@@ -66,6 +66,13 @@ export const deleteItemFromItemList = (id) => (dispatch) => {
     return dispatch(changeItemsList(newItemList));
 }
 
+export const editItemInList = (newItem) => (dispatch) => {
+    let currentItemList = dispatch(getItemsList());
+    const idx = currentItemList.findIndex((el) => el.id === newItem.id);
+    let newItemList = [...currentItemList.slice(0, idx), newItem, ...currentItemList.slice(idx +1)];
+    return dispatch(changeItemsList(newItemList));
+}
+
 export const incrementItemId = () =>  (dispatch) => {
     let currentId = dispatch(getItemIdCounter())
     return dispatch(changeItemId(++currentId));

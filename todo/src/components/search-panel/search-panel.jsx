@@ -1,7 +1,10 @@
 import React, {useState } from 'react';
 import './search-panel.css';
+import {useDispatch} from 'react-redux'
+import {changeTerm} from './../../actions/item'
 
-const SearchPanel = ({onSearch}) => {
+const SearchPanel = () => {
+  const dispatch = useDispatch();
   
   const [label, setLabel] = useState('');
 
@@ -10,7 +13,7 @@ const SearchPanel = ({onSearch}) => {
   const onSearchChange = (e) => {
     const label = e.target.value;
     setLabel(label);
-    onSearch(label);
+    dispatch(changeTerm(label));
   };
   
     return (

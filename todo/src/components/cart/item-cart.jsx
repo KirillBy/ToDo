@@ -17,8 +17,8 @@ const ItemCart = () => {
     }
 
     const onItemEditForm = () => {
-        changeItemEditForm(true);
-        changeItemInfoForm(false);
+        dispatch(changeItemEditForm(true));
+        dispatch(changeItemInfoForm(false));
     }
     if (!visible) {
         return null;

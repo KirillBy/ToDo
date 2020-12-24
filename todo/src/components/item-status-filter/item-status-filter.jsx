@@ -1,13 +1,22 @@
 import React from 'react';
 import './item-status-filter.css';
+import { useDispatch, useSelector } from "react-redux";
+import {changeFilter} from './../../actions/item'
 
-const ItemStatusFilter = ({filter, onFilterChange}) => {
+const ItemStatusFilter = () => {
 
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.item.filter);
+  
   const buttonsList = [
     {name: 'all', label: 'All'},
     {name: 'active', label: 'Active'},
     {name: 'done', label: 'Done'},
   ];
+
+  const onFilterChange = (name) => {
+    dispatch(changeFilter(name));
+  }
 
     const buttons = buttonsList.map(({name, label}) => {
       const isActive = filter === name;

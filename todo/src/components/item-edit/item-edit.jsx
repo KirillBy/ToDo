@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {changeItemEditForm, changeItemListForm} from '../../actions/components';
+import {changeItemEditForm, changeItemInfoForm} from '../../actions/components';
+import {editItemInList,changeSelectedItem} from '../../actions/item'
 import './item-edit.css';
 
 const ItemEdit = ({ onEdit}) => {
@@ -55,7 +56,10 @@ const ItemEdit = ({ onEdit}) => {
       type: type,
       label: label
     }
-    onEdit(newCart);
+    dispatch(editItemInList(newCart));
+    dispatch(changeSelectedItem(newCart));
+    dispatch(changeItemEditForm(false));
+    dispatch(changeItemInfoForm(true));
   };
   const onEditClose = () => {
     dispatch(changeItemEditForm(false));
